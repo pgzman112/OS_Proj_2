@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <limits>
 #include <ios>
+#include <fstream>
 
 using namespace std;
 
@@ -18,7 +19,7 @@ string hexToBin(string & hex);
 string binToHex(long int bin);
 string decToBin(int dec);
 int binToDec(long int bin);
-string addressChange(string & input, int idx, int offset, vector<Page> & PageTable);
+string addressChange(string & input, int idx, int offset, vector<Page> & PageTable, bool dec);
 
 int main(int argc, char *argv[]){
   // ********************* ME TESTING THE CONVERSION FUNCTIONS **********
@@ -34,20 +35,21 @@ int main(int argc, char *argv[]){
   // vaN = virtual Address size
   // paM = physical address size
   // pageSize = pageSize;
-  cout << argc << endl;
+  fstream fifi;
+  fifi.open(argv[1]);
   int vaN, paM, pageSize;
   int counter = 0;
-  while(counter < 3 && !cin.eof()){
+  while(counter < 3){
     if(counter == 0){
-      cin >> vaN;
+      fifi >> vaN;
       counter++;
     }
     else if(counter == 1){
-      cin >> paM;
+      fifi >> paM;
       counter++;
     }
     else if(counter == 2){
-      cin >> pageSize;
+      fifi >> pageSize;
       counter++;
     }
   }
@@ -56,17 +58,18 @@ int main(int argc, char *argv[]){
   vector<Page> PageTable;
   while(run){
     string t = "";
-    getline(cin, t);
-    if(cin.eof()){
+    getline(fifi, t);
+    if(fifi.eof()){
       cout << "Finished building page table" <<endl;
+      fifi.close();
       run = false;
     }
     else{
       struct Page temp;
-      cin >> temp.V;
-      cin >> temp.P;
-      cin >> temp.F;
-      cin >> temp.U;
+      fifi >> temp.V;
+      fifi >> temp.P;
+      fifi >> temp.F;
+      fifi >> temp.U;
       temp.frameNum = decToBin(temp.F);
       PageTable.push_back(temp);
       counter++;
@@ -85,67 +88,38 @@ int main(int argc, char *argv[]){
 
   bool runny = true;
   string cont = "";
+  cin.clear();
+  cin.seekg(0);
   while(runny){
-    cin.clear();
-    cin.ignore(numeric_limits<streamsize>::max(),'\n');
-    cin.sync();
     string ins;
-    cout << "Please enter address to lookup: " << endl;
-    cin.clear();
+    bool dec = false;
     getline(cin, ins);
-    cout << "Ins = " << ins << endl;
-    if(cin.fail()){
-      cout << "WHY THE FUCK IS THIS PIECE OF SHIT IN A FAIL STATE " << endl;
-    }
-    string dd = addressChange(ins, idx, offset, PageTable);
-    cout << dd << endl;
-    cout << "Input 'y' to check another address or anything else to quit" << endl;
-    cin >> cont;
-    if (cont == "y"){
-      cout << "conts yes" << endl;
+    if(ins[0] == '0' && ins[1] == 'x'){
+      string ins2 = "";
+      dec = false;
+      for(int i = 0; i < ins.length(); i++){
+        if(i == 0 || i == 1);
+          //skip
+        else
+          ins2 += ins[i];
+      }
+      ins = ins2;
     }
     else
+      dec = true;
+    if(ins != ""){
+      cout << "Input = " << ins << endl;
+      string dd = addressChange(ins, idx, offset, PageTable, dec);
+      if(dd != "DISK" && dd != "SEGFAULT"){
+        dd = binToHex(stol(dd));
+        dd = "0x" + dd;
+      }
+      cout << "DD as Hex: " << dd << endl;
+    }
+    if(cin.fail()){
       runny = false;
+    }
   }
-
-  // string hardCodedShit = "9b";
-  // string test = hexToBin(hardCodedShit);
-  // //cout << test << endl;
-  // if(test.length() < (offset+idx)){
-  //   int dif = (offset+idx) - test.length();
-  //   string tt = "";
-  //   for(int j = 0; j < dif; j++){
-  //     tt.push_back('0');
-  //   }
-  //   test = tt + test;
-  // }
-  // string ind, off = "";
-  // int co = 0;
-  // for(int z = 0; z < test.length(); z++){
-  //   if(co < idx){
-  //     ind.push_back(test[z]);
-  //   }
-  //   else{
-  //     off.push_back(test[z]);
-  //   }
-  //   co++;
-  // }
-  //
-  // // cout << "index: " << ind << endl;
-  // // cout << "offset " << off << endl;
-  //
-  // char char_array[ind.length() + 1];
-  // strcpy(char_array, ind.c_str());
-  // char * end;
-  // cout << strtoull(char_array, NULL ,2) << endl;
-  // int l = strtoull(char_array, NULL ,2);
-  // struct Page temp;
-  // string fn = PageTable[l].frameNum;
-  //  cout << PageTable[l].V << " " << PageTable[l].P << " " << PageTable[l].F << " " << PageTable[l].U << " "<< endl;
-  // cout << "fn before off: " << fn << endl;
-  // fn = fn + off;
-  // cout << fn << endl;
-
   return 0;
 }
 
@@ -267,12 +241,15 @@ int binToDec(long int bin){
     dec_value += last_digit * base;
     base = base * 2;
   }
-
   return dec_value;
 }
 
-string addressChange(string & input, int idx, int offset, vector<Page> & PageTable){
-  string test = hexToBin(input);
+string addressChange(string & input, int idx, int offset, vector<Page> & PageTable, bool dec){
+  string test = input;
+  if(!dec)
+    test = hexToBin(input);
+  else
+    test = decToBin(stoi(test));
   if(test.length() < (offset+idx)){
     int dif = (offset+idx) - test.length();
     string tt = "";
@@ -290,11 +267,20 @@ string addressChange(string & input, int idx, int offset, vector<Page> & PageTab
       off.push_back(test[z]);
     co++;
   }
-
   char char_array[ind.length() + 1];
-  int l = strtoull(char_array, NULL ,2);
   strcpy(char_array, ind.c_str());
+  int l = strtoull(char_array, NULL ,2);
   string temp = PageTable[l].frameNum;
   temp = temp + off;
+  if(PageTable[l].V == 0){
+    if(PageTable[l].F > 0){
+      temp = "SEGFAULT";
+      //cout << "PTable: " << PageTable[l].F << endl;
+    }
+    else if(PageTable[l].F == 0){
+      temp = "DISK";
+
+    }
+  }
   return temp;
 }
