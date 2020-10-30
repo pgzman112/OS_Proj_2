@@ -1,0 +1,149 @@
+-------------------------------------------------------------------------------
+
+            +-------------------------+
+            | CS 450                  |
+            | PROJECT: Page Table Sim |
+            | DESIGN DOCUMENT         |
+            +-------------------------+
+
+---- GROUP ----
+
+>> Fill in the names and email addresses of your group members.
+
+FirstName LastName <email@domain.example>
+FirstName LastName <email@domain.example>
+
+---- PRELIMINARIES ----
+
+>> If you have any preliminary comments on your submission, notes for the
+>> TAs, or extra credit, please give them here.
+
+>> Please cite any offline or online sources you consulted while
+>> preparing your submission, other than the Pintos documentation, course
+>> text, lecture notes, and course staff.
+
+               PAGE TABLE SIMULATOR
+               ====================
+
+---- DATA STRUCTURES ----
+
+>> A1: Copy here the declaration of each new `struct',
+>> `struct' member, global or static variable, `typedef',
+>> enumeration, or classes. Identify the purpose of each 
+>> in 25 words or less.
+
+
+---- FUNCTIONS ----
+
+>> A2. List the function prototype and full documentation for each function
+>> you have introduced to support Part A of the project.
+>> Use the appropriate Google Style Guide for function documentation.
+>> For C/C++:
+>> google.github.io/styleguide/cppguide.html#Function_Comments
+>> For Python:
+>> google.github.io/styleguide/pyguide.html#s3.8.3-functions-and-methods
+
+
+---- ALGORITHMS ----
+
+>> A3. Given the following description of a page table:
+>>
+>> 7 8 32
+>> 0 1 0 0
+>> 1 1 4 0
+>> 1 1 5 1
+>> 1 1 2 0
+>>
+>> Translate the following sequence of address requests using the method
+>> described for Part A.
+>>
+>> 0x05
+>> 0x7F
+>> 0x3B
+>> 0x7F
+>> 0x40
+>>
+
+
+>> A4. Give a computation you can use to determine how many rows to read
+>> while injesting the page table. It is ok if your program just reads
+>> every row, but its possible to compute how many rows there should be.
+
+>> A5. Describe your general strategy for managing bit-wise transformations
+>> of data, and relevant support functions you used to accomplish this.
+
+
+
+
+               CLOCK REPLACEMENT SIMULATOR
+               ===========================
+
+---- DATA STRUCTURES ----
+
+>> B1: Copy here the declaration of each new `struct',
+>> `struct' member, global or static variable, `typedef',
+>> enumeration, or classes. Identify the purpose of each 
+>> in 25 words or less.
+
+
+---- FUNCTIONS ----
+
+>> B2. List the function prototype and full documentation for each function
+>> you have introduced to support Part A of the project.
+>> Again, use the appropriate Google Style Guide for function documentation.
+
+
+---- ALGORITHMS ----
+
+>> B3. Given the following description of a page table:
+>>
+>> 7 8 32
+>> 0 1 0 0
+>> 1 1 4 0
+>> 1 1 5 1
+>> 1 1 2 0
+>>
+>> Translate the following sequence of address requests using the method
+>> described for Part B.
+>>
+>> 0x05
+>> 0x7F
+>> 0x3B
+>> 0x7F
+>> 0x40
+>>
+
+
+>> B4. Describe the data structure you used to search through the frames
+>> following the clock roation, and how you might improve efficiency
+>> if this was an implementation rather than a simulation.
+
+
+>> B5. Did you need to handle any ambiguous scenarios or corner cases 
+>> for the Clock algorithm, left unspecified in the algorithm's description?
+>> Explain any judgements you used in implementing unclear or 
+>> unspecified behavior.
+
+
+
+
+               SURVEY QUESTIONS
+               ================
+
+Answering these questions is optional, but it will help us improve the
+course in future quarters.  Feel free to tell us anything you
+want--these questions are just to spur your thoughts.  You may also
+choose to respond anonymously in the course evaluations at the end of
+the quarter.
+
+>> In your opinion, was this assignment, or any one of the problems
+>> in it, too easy or too hard?  Did it take too long or too little time?
+
+>> Did you find that working on a particular part of the assignment gave
+>> you greater insight into some aspect of OS design?
+
+>> Is there some particular fact or hint we should give students in
+>> future quarters to help them solve the problems?  Conversely, did you
+>> find any of our guidance to be misleading?
+
+>> Any other comments?
