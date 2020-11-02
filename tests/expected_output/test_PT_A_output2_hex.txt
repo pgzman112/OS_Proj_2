@@ -1,5 +1,3 @@
-Welcome to PT-Sim-Clock, the enhanced page table simulator
-Using input file tests/PT_A.txt
 0x7d0c
 0xba31
 SEGFAULT
@@ -10,3 +8,6 @@ PAGEFAULT 0x614d
 0xac7b
 0xfebe
 0x9b89
+
+Welcome to PT-Sim-Clock, the enhanced page table simulator
+Using input file tests/PT_A.txt
