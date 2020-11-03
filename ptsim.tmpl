@@ -10,8 +10,9 @@
 
 >> Fill in the names and email addresses of your group members.
 
-FirstName LastName <email@domain.example>
-FirstName LastName <email@domain.example>
+Aidan Roth <rotha@sonoma.edu>
+Antone Silveria <silveant@sonoma.edu>
+Preston Zimmerman <zimmermp@sonoma.edu>
 
 ---- PRELIMINARIES ----
 
@@ -29,9 +30,16 @@ FirstName LastName <email@domain.example>
 
 >> A1: Copy here the declaration of each new `struct',
 >> `struct' member, global or static variable, `typedef',
->> enumeration, or classes. Identify the purpose of each 
+>> enumeration, or classes. Identify the purpose of each
 >> in 25 words or less.
 
+struct Page{
+  long int V, P, F, U;
+  string frameNum;
+};
+    This struct is used to represent a row of the page table, with V being the
+    valid bit, P the permissions bit, F the frame number, and U the recently
+    used bit.
 
 ---- FUNCTIONS ----
 
@@ -42,6 +50,22 @@ FirstName LastName <email@domain.example>
 >> google.github.io/styleguide/cppguide.html#Function_Comments
 >> For Python:
 >> google.github.io/styleguide/pyguide.html#s3.8.3-functions-and-methods
+
+//Takes a hexadecimal string as input and returns its binary equivalent as a string
+string hexToBin(string & hex);
+
+//Takes a binary integer as input and returns its hexadecimal equivalent as a string
+string binToHex(long int bin);
+
+//Takes a decimal integer as input and returns its binary equivalent as a string
+string decToBin(int dec);
+
+//Takes a binary integer as input and returns its decimal equivalent as an integer
+int binToDec(long int bin);
+
+//Takes a hex or decimal input that represents a virtual address. This function
+// does the full address translation process and implements the clock algorithm.
+string addressChange(string & input, int idx, int offset, vector<Page> & PageTable, bool dec, bool clock, int & clockPointer);
 
 
 ---- ALGORITHMS ----
@@ -64,6 +88,12 @@ FirstName LastName <email@domain.example>
 >> 0x40
 >>
 
+DISK
+0x5f
+0x9b
+0x5f
+0xa0
+
 
 >> A4. Give a computation you can use to determine how many rows to read
 >> while injesting the page table. It is ok if your program just reads
@@ -82,9 +112,10 @@ FirstName LastName <email@domain.example>
 
 >> B1: Copy here the declaration of each new `struct',
 >> `struct' member, global or static variable, `typedef',
->> enumeration, or classes. Identify the purpose of each 
+>> enumeration, or classes. Identify the purpose of each
 >> in 25 words or less.
 
+Same as A1
 
 ---- FUNCTIONS ----
 
@@ -92,6 +123,7 @@ FirstName LastName <email@domain.example>
 >> you have introduced to support Part A of the project.
 >> Again, use the appropriate Google Style Guide for function documentation.
 
+Same as A2
 
 ---- ALGORITHMS ----
 
@@ -113,15 +145,23 @@ FirstName LastName <email@domain.example>
 >> 0x40
 >>
 
+PAGEFAULT 0x85
+0x5f
+PAGEFAULT 0xbb
+0x5f
+PAGEFAULT 0x80
 
 >> B4. Describe the data structure you used to search through the frames
 >> following the clock roation, and how you might improve efficiency
 >> if this was an implementation rather than a simulation.
 
+Instead of a data structue, we used a single integer to keep track of the clock
+rotation. We think this is very efficient considering its extremely low overhead.
 
->> B5. Did you need to handle any ambiguous scenarios or corner cases 
+
+>> B5. Did you need to handle any ambiguous scenarios or corner cases
 >> for the Clock algorithm, left unspecified in the algorithm's description?
->> Explain any judgements you used in implementing unclear or 
+>> Explain any judgements you used in implementing unclear or
 >> unspecified behavior.
 
 
