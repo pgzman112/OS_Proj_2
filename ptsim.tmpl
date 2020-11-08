@@ -41,6 +41,7 @@ struct Page{
     valid bit, P the permissions bit, F the frame number, and U the recently
     used bit.
 
+
 ---- FUNCTIONS ----
 
 >> A2. List the function prototype and full documentation for each function
@@ -98,11 +99,22 @@ DISK
 >> A4. Give a computation you can use to determine how many rows to read
 >> while injesting the page table. It is ok if your program just reads
 >> every row, but its possible to compute how many rows there should be.
+  We just read in line by line so it didnt really matter. But I think you
+  could use the formula:
+    (pageSize / physical memory) * (physical memory - virtual memory)
+
 
 >> A5. Describe your general strategy for managing bit-wise transformations
 >> of data, and relevant support functions you used to accomplish this.
-
-
+  We have multiple supporting functions to perform these tasks.
+    string hexToBin(string & hex);
+    string binToHex(long int bin);
+    string decToBin(int dec);
+    int binToDec(long int bin);
+  We just looked up fucntions on how to convert between diffrent number
+  representations and put them in. We also probably could have found a library
+  that does this for us but we did not look for one out of lazyness even though
+  it probably would have saved some time.
 
 
                CLOCK REPLACEMENT SIMULATOR
@@ -123,7 +135,8 @@ Same as A1
 >> you have introduced to support Part A of the project.
 >> Again, use the appropriate Google Style Guide for function documentation.
 
-Same as A2
+Same as A2. The only difference is the fact that bool clock will be true and
+the clockPointer integer will be used to implement the clock algorithm.
 
 ---- ALGORITHMS ----
 
@@ -164,6 +177,16 @@ rotation. We think this is very efficient considering its extremely low overhead
 >> Explain any judgements you used in implementing unclear or
 >> unspecified behavior.
 
+  We did not find too many edge cases that needed to be handled throughout our
+  testing. This is a fairly straight forward algorithm (at least it was after your
+  2nd video going over it). With the way we implemented a clock pointer instead of
+  a seperate frame table data structure we did have to add specific logic to make
+  sure that we never perform an eviction on something that is not in the frame table.
+  for example instead of just checking whether an entry is recently used we must check
+  if  recently used == 0 AND that valid bit == 1 (meaning its currently in memory).
+  this would not be needed if we had a seperate frame table that only held the current frame
+  pages but this would require a lot more overhead I think.
+
 
 
 
@@ -178,12 +201,39 @@ the quarter.
 
 >> In your opinion, was this assignment, or any one of the problems
 >> in it, too easy or too hard?  Did it take too long or too little time?
+  ->I think this was a fairly easy project once you understood how to do the translations
+  and understood the clock algorithm. But without a strong understanding of those too
+  problems I could see this being a lot harder. I cant remember how much time this
+  project took specifically but I don't think it was all that much which was kind of nice
+  due to some of the things going on in other classes at the moment (ie: building the
+  gmp library for watts instead of just importing it... so trivial and time consuming)
 
 >> Did you find that working on a particular part of the assignment gave
 >> you greater insight into some aspect of OS design?
+  -> While the translation bit was important I found implementing the clock
+  algorithm to be particularily insightful into how OS's manage memory and even though
+  I said I thought this project was relatively easy and quick, I found it to be very insightful, I just
+  don't think that the extension was particularily neccessary.
 
 >> Is there some particular fact or hint we should give students in
 >> future quarters to help them solve the problems?  Conversely, did you
 >> find any of our guidance to be misleading?
+  -> I have 2 main suggestions for covering this topic in the future. First has to do with address translation
+  and how it is explained. Now maybe I missed something in class but from what I grasped there was never just a clear outlining
+  of the steps required to perform translation even though it can be easily be broken down into a few steps (which for me at least
+  makes it so much easier to understand).
+    1) find offset amount and understand that we care about whats left and that is the "index"
+    2) convert hex input to binary -> seperate index and offset (set offset asside)
+    3) convert index portion of binary to decimal (this is the index you want to look at in the page table)
+    4) if valid then take the frame number convert it from decimal to binary than concatinate that and the set asside offset
+      -> frame number in binary + offset in binary
+    5) convert this long binary number back into hex and boom you're done.
+  This doesnt cover everything but I think something like this during class would have made it far easier to grasp
+  address translations.
+  My 2nd suggestion is that the 2nd video you put out about the clock algorithm was fantastic. I would suggest working that into lecture
+  next time around since before that video I was completely lost and after I was able to implement the clock alogorithm with ease.
 
 >> Any other comments?
+  No but thank you for not giving us trivial time consuming work unlike other teachers. I don't mind when projects take time as long as
+  that time is spent understanding new concepts. It makes me feel like I am actually learning something valuable unlike some classes right now
+  which appear to just be giving out busy work.
