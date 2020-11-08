@@ -84,7 +84,6 @@ int main(int argc, char *argv[]){
       counter++;
     }
   }
-  //cout << PageTable.size() << endl;
   PageTable.pop_back();
 
   // OFFSET IS THE Trailing shit we don't care as much about
